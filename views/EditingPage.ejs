@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Member - <%= member.name %></title>
+    <link rel="stylesheet" href="../public/style.css">
+</head>
+<body>
+    <header>
+        <h1>Edit Member: <%= member.name %></h1>
+        <a href="/" class="btn">Show All Members</a>
+    </header>
+
+    <section>
+        <form action="/edit-member/<%= member.id %>" method="POST" enctype="multipart/form-data">
+            <div>
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" value="<%= member.name %>" required>
+            </div>
+            <div>
+                <label for="age">Age</label>
+                <input type="number" id="age" name="age" value="<%= member.age %>" required>
+            </div>
+            <div>
+                <label for="university">University</label>
+                <input type="text" id="university" name="university" value="<%= member.university %>" required>
+            </div>
+            <div>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="<%= member.email %>" required>
+            </div>
+            <div>
+                <label for="phone">Phone</label>
+                <input type="text" id="phone" name="phone" value="<%= member.phone %>" required>
+            </div>
+            <div>
+                <label for="technicalCommittee">Technical Committee</label>
+                <input type="text" id="technicalCommittee" name="technicalCommittee" value="<%= member.technicalCommittee %>">
+            </div>
+            <div>
+                <label for="nonTechnicalCommittee">Non-Technical Committee</label>
+                <input type="text" id="nonTechnicalCommittee" name="nonTechnicalCommittee" value="<%= member.nonTechnicalCommittee %>" >
+            </div>
+            <div>
+                <label for="image">Update Member Image</label>
+                <input type="file" id="image" name="image">
+            </div>
+            <% if (member.image) { %>
+            <div>
+                <p>Current Image:</p>
+                <img src="<%= member.image %>" alt="<%= member.name %>'s Profile Image" width="200">
+            </div>
+            <% } %>
+            <button type="submit" class="btn">Update Member</button>
+        </form>
+    </section>
+</body>
+</html>

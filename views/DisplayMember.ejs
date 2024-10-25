@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Details - <%= member.name %></title>
+    <link rel="stylesheet" href="../public/style.css">
+</head>
+<body>
+    <header>
+        <h1>Details for <%= member.name %></h1>
+        <a href="/">All Members</a>
+    </header>
+
+    <section>
+        <div class="member-details">
+            <h2>Personal Information</h2>
+            <ul>
+                <li><strong>Name:</strong> <%= member.name %></li>
+                <li><strong>Age:</strong> <%= member.age %></li>
+                <li><strong>University:</strong> <%= member.university %></li>
+                <li><strong>Email:</strong> <%= member.email %></li>
+                <li><strong>Phone:</strong> <%= member.phone %></li>
+            </ul>
+
+            <h2>Committee Membership</h2>
+            <ul>
+                <li><strong>Technical Committee:</strong> <%= member.technicalCommittee %></li>
+                <li><strong>Non-Technical Committee:</strong> <%= member.nonTechnicalCommittee %></li>
+            </ul>
+
+            <% if (member.image) { %>
+            <div class="member-image">
+                <h2>Member Image</h2>
+                <img src="<%= member.image %>" alt="<%= member.name %>'s Image" width="200">
+            </div>
+            <% } %>
+
+            <div class="actions">
+               <a href="/edit-member/<%= member.id %>">Edit</a>
+                <!-- <form action="/edit-member/<%= member._id %>" method="GET" style="display:inline;">
+                    <button type="submit" class="btn-edit">Edit</button>
+                </form> -->
+                <form action="/delete-member/<%= member._id %>" method="POST" style="display:inline;">
+                    <button type="submit" class="btn-delete">Delete</button>
+                </form>
+            </div>
+            
+        </div>
+    </section>
+</body>
+</html>
