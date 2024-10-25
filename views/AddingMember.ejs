@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Team Member</title>
+    <link rel="stylesheet" href="../public/style.css">
+</head>
+<body>
+    <header>
+        <h1>Add New Team Member</h1>
+        <a href="/">All Members</a>
+    </header>
+
+    <br><br>
+
+    <section>
+        <form action="/add-member" method="POST" enctype="multipart/form-data">
+            <div>
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name">
+            </div>
+            <div>
+                <label for="age">Age</label>
+                <input type="number" id="age" name="age">
+            </div>
+            <div>
+                <label for="university">University</label>
+                <input type="text" id="university" name="university">
+            </div
+            <div>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email">
+            </div>
+            <div>
+                <label for="phone">Phone</label>
+                <input type="text" id="phone" name="phone">
+            </div>
+            <div>
+                <label for="technicalCommittee">Technical Committee</label>
+                <input type="text" id="technicalCommittee" name="technicalCommittee">
+            </div>
+            <div>
+                <label for="nonTechnicalCommittee">Non-Technical Committee</label>
+                <input type="text" id="nonTechnicalCommittee" name="nonTechnicalCommittee">
+            </div>
+            <div>
+                <label for="image">Member Image</label>
+                <input type="file" id="image" name="image">
+            </div>
+            <button type="submit" class="btn">Add Member</button>
+        </form>
+    </section>
+</body>
+</html>

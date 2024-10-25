@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Members Dashboard</title>
+    <link rel="stylesheet" href="../public/style.css">
+</head>
+<body>
+    
+    <header>
+        <h1>Team Members Dashboard</h1>
+    </header>
+    <a href="/add-member" method="POST">Add New Member</a>
+
+    <section>
+        <% if (members.length > 0) { %>
+            <h2>All Team Members</h2>
+            <br>
+
+            <% members.forEach(function(member) { %>
+                <a href="/member/<%= member._id %>">
+                     <strong>Name:</strong> <%= member.name %>             <br>
+                     <strong>Age:</strong> <%= member.age %>               <br>  
+                     <strong>University:</strong> <%= member.university %> <br>
+                </a>
+                <hr>
+            <% }); %>
+        <% } else { %>
+            <p>No team members found. Add some!</p>
+        <% } %>
+    </section>
+
+</body>
+</html>
