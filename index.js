@@ -4,6 +4,9 @@ import {Member} from './models/member.model.js';
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+import addMemberSchema from './validators/addMemberValidation.js' ;
+import editMemberSchema from './validators/EditMemberValidation.js' ;
+import validateRequest from './middlewares/ValidateRequst.js';
 
 
 
@@ -36,6 +39,7 @@ app.use('/images',express.static('images'));
 // middlewares
 app.use(express.static('public'));
 app.use(express.urlencoded({extended:true}));
+app.use(express.json());
 
 app.set('view engine','ejs');
 
@@ -50,6 +54,8 @@ app.get('/',async(req,res)=>{
     catch(err){
         console.log("Message form get / route" + err.message);
         res.status(500).send('Erorr displaying the members: '+ err.message);
+    }finally{
+        console.log("Display the HOME PAGE");
     }
 });
 
@@ -61,6 +67,8 @@ app.get('/member/:id',async (req,res)=>{
     catch(err){
         console.log("Erorr display member" + err.message);
         res.status(500).send('Erorr displaying the member: '+ err.message);
+    }finally{
+        console.log("Display The Member Page");
     }
 })
 
@@ -69,6 +77,8 @@ app.get('/add-member',(req,res)=>{
         res.render('AddingMember');
     }catch(err){
         res.status(500).send('Erorr displaying adding page: '+ err.message);
+    }finally{
+        console.log("Display Adding Member Page");
     }
 })
 
@@ -79,10 +89,12 @@ app.get('/edit-member/:id',async(req,res)=>{
     }catch(err){
         console.log("Erorr Message form edit page: " + err.message);
         res.status(404).send("Erorr Message from edit page: Member not found "+ err.message);
+    }finally{
+        console.log("Display Edit Member Page");
     }
 })
 
-app.post('/add-member',upload.single('image'),async(req,res)=>{
+app.post('/add-member',upload.single('image'),validateRequest(addMemberSchema),async(req,res)=>{
     try{
         // the added data for a member
         const {name,age,university,email,phone,technicalCommittee,nonTechnicalCommittee} = req.body;
@@ -103,18 +115,28 @@ app.post('/add-member',upload.single('image'),async(req,res)=>{
         // redirect to home page
         res.redirect('/');
     }catch(err){
-        console.log(err.message);
-        res.status(500).send('Erorr Adding the member ' + err.message)
+        if (err.code === 11000) {
+            // Handle duplicate error for email or phone
+            res.status(400).send('Email or phone number already exists.');
+        } else if (err.name === 'ValidationError') {
+            // Handle Mongoose validation errors
+            const messages = Object.values(err.errors).map(err => err.message);
+            res.status(400).send(messages.join(', '));
+        } else {
+            console.log(err.message);
+            res.status(500).send('Erorr Adding the member ' + err.message)
+        }
+    }finally{
+        console.log("<-- Member Added Successfully -->")
     }
 })
 
-app.post('/edit-member/:id',upload.single('image'),async(req,res)=>{
+app.post('/edit-member/:id',upload.single('image'), validateRequest(editMemberSchema),async(req,res)=>{
     try{
         // get old info for the member before update him.
         const member = await Member.findById(req.params.id);
         // updated data
         const {name,age,university,email,phone,technicalCommittee,nonTechnicalCommittee} = req.body;
-
         const updatedMemberData = {
             name,
             age,
@@ -145,11 +167,41 @@ app.post('/edit-member/:id',upload.single('image'),async(req,res)=>{
         res.redirect(`/member/${Id}`);
     }
     catch(err){
-        console.log("Erorr updating member");
-        res.status(500).send("Erorr Updating Member : " + err.message);
+        if (err.code === 11000) {
+            // Handle duplicate error for email or phone
+            res.status(400).send('Email or phone number already exists.');
+        } else if (err.name === 'ValidationError') {
+            // Handle Mongoose validation errors
+            const messages = Object.values(err.errors).map(err => err.message);
+            res.status(400).send(messages.join(', '));
+        } else {
+            console.log("Erorr updating member");
+            res.status(500).send("Erorr Updating Member : " + err.message);
+        }
+    }finally{
+        console.log("Member Edited Successfully")
     }
 })
 
+app.post('/delete-member/:id',async(req,res)=>{
+    try{
+        const member = await Member.findById(req.params.id);
+        // delete the image from its folder
+        if(member.image){
+            const oldImagePath = `./${member.image}`;
+            fs.unlink(oldImagePath, (err) => {
+                if (err) console.error("Error deleting previous image:", err);
+            });
+        }
+        await Member.findByIdAndDelete(member);
+        res.redirect('/');
+    }catch(err){
+        console.log("Erorr Deleting Member :" + err.message);
+        res.status(500).send("Erorr Deleting Member" + err.message);
+    }finally{
+        console.log("<----- Member Deleted Successfully ----->")
+    }
+})
 
 app.use((req,res)=>{
     res.status(404).send("404 NOT FOUND");

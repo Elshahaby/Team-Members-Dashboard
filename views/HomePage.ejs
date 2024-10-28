@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Team Members Dashboard</title>
-    <link rel="stylesheet" href="../public/style.css">
+    <%-include('./partials/styleLinks.ejs')%>
 </head>
 <body>
     
     <header>
         <h1>Team Members Dashboard</h1>
+    <a href="/add-member" class="btn">Add New Member</a> 
     </header>
-    <a href="/add-member" method="POST">Add New Member</a>
 
     <section>
         <% if (members.length > 0) { %>

@@ -1,0 +1,28 @@
+/* Member details styles */
+.member-details {
+    max-width: 600px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.member-details h2 {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.member-details ul {
+    list-style-type: none;
+}
+
+.member-details li {
+    margin-bottom: 8px;
+}
+
+.member-image img {
+    border-radius: 5px;
+    margin-top: 10px;
+}

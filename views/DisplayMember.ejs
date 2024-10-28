@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Member Details - <%= member.name %></title>
-    <link rel="stylesheet" href="../public/style.css">
+    <%-include('./partials/styleLinks.ejs')%>
 </head>
 <body>
     <header>
@@ -37,10 +37,9 @@
             <% } %>
 
             <div class="actions">
-               <a href="/edit-member/<%= member.id %>">Edit</a>
-                <!-- <form action="/edit-member/<%= member._id %>" method="GET" style="display:inline;">
+                <form action="/edit-member/<%= member._id %>" method="GET" style="display:inline;">
                     <button type="submit" class="btn-edit">Edit</button>
-                </form> -->
+                </form>
                 <form action="/delete-member/<%= member._id %>" method="POST" style="display:inline;">
                     <button type="submit" class="btn-delete">Delete</button>
                 </form>
